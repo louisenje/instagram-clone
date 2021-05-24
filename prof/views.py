@@ -20,7 +20,7 @@ class Profile(models.Model):
     @classmethod
     def update(cls,user_id):
         pass
-    
+
 class Image(models.Model):
     image=models.ImageField(upload_to='images/')
     image_name=models.CharField(max_length=50)
@@ -47,3 +47,22 @@ class Image(models.Model):
     def get_followed_image(cls,followers_array):
         images=cls.objects.filter(user__in=followers_array)
         return images
+    
+class comment(models.Model):
+    comment=HTMLField()
+    user=models.ForeignKey(User)
+    image=models.ForeignKey(Image)
+
+    def __str__(self):
+        return self.comment
+    
+    @classmethod
+    def get_comments(cls,image_id):
+        comments=cls.objects.filter(image=image_id)
+        return comments
+class Follow(models.Model):
+    follower_id=models.IntegerField(blank=True)
+    user_id=models.ForeignKey(User,blank=True)
+    
+    def __str__(self):
+        return self.user_id.username 
